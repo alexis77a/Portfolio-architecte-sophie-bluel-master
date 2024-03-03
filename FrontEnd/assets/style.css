@@ -227,8 +227,14 @@ footer nav ul {
 	font-weight: 600;
 	color: #1D6154;
 	font-family:'Work Sans';
+	display: flex;
+	align-items: center;
 }
 .category:hover {
+	background-color: #1D6154;
+	color: white;
+}
+.active {
 	background-color: #1D6154;
 	color: white;
 }
