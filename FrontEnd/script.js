@@ -20,6 +20,7 @@ async function init() {
 
         displayWorks();
         displayFilter();
+        displayLoginPage();
         
         // Vous pouvez appeler filteredWorks ici si nécessaire
     } catch (error) {
@@ -69,6 +70,7 @@ function displayWorks() {
         const caption = document.createElement('figcaption');
         caption.textContent = work.title;
 
+
         figure.appendChild(image);
         figure.appendChild(caption);
         fragment.appendChild(figure);
@@ -77,6 +79,7 @@ function displayWorks() {
     gallery.appendChild(fragment);
     console.log("Travaux affichés")
 }
+
 function displayFilter() {
     const filtersContainer = document.querySelector('#filters-container');
     const fragment = document.createDocumentFragment();
@@ -152,6 +155,60 @@ function filteredWorks(categoryId) {
 }
 init();
 
+// fonction pour rendre l'élément "login" cliquable
+function displayLoginPage() {
+    var liElements = document.querySelectorAll('li');
+
+    // oarcourt les éléments <li> pour trouver celui contenant le texte "login"
+    liElements.forEach(function(liElement) {
+        if (liElement.textContent.trim() === 'login') {
+
+            liElement.addEventListener('click', function() {
+                // efface le contenu de la section <main>
+                var mainSection = document.querySelector('main');
+                mainSection.innerHTML = "";
+
+                console.log("Clic sur 'login'");
+                // redirige l'utilisateur vers une page de connexion
+                window.location.href = 'page-de-connexion.html';
+            });
+        }
+    });
+}
+
+displayLoginPage();
 
 
+const loginForm = document.querySelector('.loginForm');
 
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(loginForm);
+    const userData = {
+        email: formData.get('email'),
+        password: formData.get('password')
+    };
+
+    try {
+        const response = await fetch('http://localhost:5678/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur réseaux');
+        }
+
+        // redirige vers la page d'accueil
+        window.location.href = 'index.html';
+
+        console.log("Connexion réussie")
+    } catch (error) {
+        console.error(error.message);
+        alert('Identifiants ou mot de passe incorrects');
+    }
+});
