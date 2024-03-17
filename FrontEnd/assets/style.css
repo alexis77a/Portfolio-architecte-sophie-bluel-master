@@ -194,11 +194,13 @@ footer nav ul {
 	color: black;
 }
 .edit-button {
-	width: 100px;
-	height: 32px;
+	width: 125px;
+	height: 35px;
 	position: absolute;
-	background-color: white;
+	font-family: 'Work Sans';
 	border: none;
+	cursor: pointer;
+	text-align: end;
 }
 
 .photo-gallery {
@@ -236,7 +238,10 @@ footer nav ul {
 }
 .active {
 	background-color: #1D6154;
-	color: white;
+}
+.category.active {
+    font-weight: bold;
+    color: white;
 }
 #login {
 	height: 680px;
@@ -298,4 +303,174 @@ footer nav ul {
 }
 .forgottenPassword {
 	color: black;
+}
+.loginBold {
+	font-weight: 700;
+}
+.modal {
+    display: none; /* Cachée par défaut */
+    position: fixed; /* Position fixe pour rester au-dessus du contenu */
+    top: 50%; /* Position à 50% de la hauteur de la fenêtre */
+    left: 50%; /* Position à 50% de la largeur de la fenêtre */
+    transform: translate(-50%, -50%); /* Déplacement de la modale de moitié de sa taille vers le haut et la gauche */
+    width: 630px;
+    height: 680px;
+    z-index: 1; /* Assure que la modale est au-dessus du reste du contenu */
+}
+
+.modal-content {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.close-modal {
+	color: black;
+	position: absolute;
+	top: 30px;
+	right: 25px;
+	width: 21px;
+	height: 28px;
+	font-size: 29px;
+}
+
+.titleModal {
+	text-align: center;
+	font-family: "Work Sans";
+	color: black;
+	font-weight: 200;
+	height: 90px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-shadow {
+    background-color: rgba(0, 0, 0, 0.5); /* Couleur semi-transparente */
+}
+.work-itemModal {
+	position: relative;
+}
+.work-imageModal {
+	width: 70px;
+	position: relative;
+}
+.worksContainerModal {
+	width: 70%;
+	height: 400px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-content: center;
+	border-bottom: 2px solid;
+}
+.delete-button {
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	right: 0;
+}
+.iconeTrash {
+	width: 4px;
+	height: 12px;
+	display: flex;
+	justify-content: center;
+}
+.addwork-button {
+	width: 230px;
+    height: 47px;
+    position: absolute;
+    bottom: 60px;
+    background-color: #1D6154;
+    border: none;
+    border-radius: 32px;
+    color: white;
+    font-size: 18px;
+    font-family: "Syne";
+}
+.modaladdWorks {
+	width: 630px;
+    height: 680px;
+	position: fixed;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	z-index: 2;
+	background-color: white;
+}
+.modaladd-content {
+	height: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.arrowRetournModal {
+	font-size: 30px;
+}
+.return-arrow {
+	position: absolute;
+	left: 0;
+	width: 90px;
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.titleModalAdd {
+	text-align: center;
+    font-family: "Work Sans";
+    color: black;
+    font-weight: 200;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.addform-content {
+	width: 50px;
+}
+.form-content {
+	height: 70%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	border-bottom: 2px solid #B3B3B3;
+}
+.valid-form {
+	height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#imageFile {
+	width: 420px;
+	height: 169px;
+	background-color: #E8F1F6;
+}
+#projectName {
+	width: 420px;
+	height: 51px;
+}
+#category {
+	width: 420px;
+	height: 51px;
+}
+.submit-button {
+	width: 240px;
+    height: 36px;
+    border-radius: 18px;
+	border: none;
+	background-color: #A7A7A7;
+	color: white;
+	font-size: 20px;
+	font-weight: 600;
+}
+.form-title {
+	font-size: 15px;
+	font-weight: 800;
 }
