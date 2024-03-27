@@ -28,8 +28,13 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+input, textarea, select, button {
+	border: none;
+	background-color: transparent;
+}
 body {
 	line-height: 1;
+	background-color: #FFFEF8;
 }
 ol, ul {
 	list-style: none;
@@ -191,16 +196,28 @@ footer nav ul {
 	font-weight: 700;
 }
 .icon-edit {
-	color: black;
+	width: 7px;
+	position: absolute;
+	left: 35px;
+	top: 8px;
 }
 .edit-button {
-	width: 125px;
-	height: 35px;
+	width: 132px;
+	height: 32px;
 	position: absolute;
 	font-family: 'Work Sans';
 	border: none;
 	cursor: pointer;
 	text-align: end;
+	background-color: transparent;
+	font-size: 16px;
+	font-weight: 300;
+}
+.editIcon {
+	color: black;
+	position: absolute;
+	left: 40px;
+	font-weight: 500;
 }
 
 .photo-gallery {
@@ -300,6 +317,7 @@ footer nav ul {
 	border: none;
 	border-radius: 25px;
 	font-size: 18px;
+	cursor: pointer;
 }
 .forgottenPassword {
 	color: black;
@@ -308,14 +326,14 @@ footer nav ul {
 	font-weight: 700;
 }
 .modal {
-    display: none; /* Cachée par défaut */
-    position: fixed; /* Position fixe pour rester au-dessus du contenu */
-    top: 50%; /* Position à 50% de la hauteur de la fenêtre */
-    left: 50%; /* Position à 50% de la largeur de la fenêtre */
-    transform: translate(-50%, -50%); /* Déplacement de la modale de moitié de sa taille vers le haut et la gauche */
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 630px;
     height: 680px;
-    z-index: 1; /* Assure que la modale est au-dessus du reste du contenu */
+    z-index: 2;
 }
 
 .modal-content {
@@ -327,14 +345,15 @@ footer nav ul {
 	align-items: center;
 }
 
-.close-modal {
-	color: black;
+.closeModal {
+	
 	position: absolute;
 	top: 30px;
 	right: 25px;
 	width: 21px;
 	height: 28px;
 	font-size: 29px;
+	cursor: pointer;
 }
 
 .titleModal {
@@ -368,10 +387,18 @@ footer nav ul {
 	border-bottom: 2px solid;
 }
 .delete-button {
-	width: 18px;
-	height: 18px;
+	width: 20px;
+	height: 20px;
+	background-color: black;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: absolute;
-	right: 0;
+	top: 5px;
+	right: 5px;
+	border-radius: 5px;
+	cursor: pointer;
 }
 .iconeTrash {
 	width: 4px;
@@ -390,6 +417,7 @@ footer nav ul {
     color: white;
     font-size: 18px;
     font-family: "Syne";
+	cursor: pointer;
 }
 .modaladdWorks {
 	width: 630px;
@@ -410,6 +438,7 @@ footer nav ul {
 }
 .arrowRetournModal {
 	font-size: 30px;
+	cursor: pointer;
 }
 .return-arrow {
 	position: absolute;
@@ -447,18 +476,24 @@ footer nav ul {
     align-items: center;
     justify-content: center;
 }
-#imageFile {
-	width: 420px;
-	height: 169px;
-	background-color: #E8F1F6;
+#imageWorks {
+	width: 240px;
+	height: 41px;
+	display: none;
 }
-#projectName {
+#nameWorks {
 	width: 420px;
 	height: 51px;
+	border: none;
+	box-shadow: 0px 0px 14px -10px black;
+	outline: none;
 }
-#category {
+#categoryId {
 	width: 420px;
 	height: 51px;
+	border: none;
+	box-shadow: 0px 0px 14px -10px black;
+	outline: none;
 }
 .submit-button {
 	width: 240px;
@@ -469,8 +504,113 @@ footer nav ul {
 	color: white;
 	font-size: 20px;
 	font-weight: 600;
+	cursor: pointer;
 }
 .form-title {
 	font-size: 15px;
 	font-weight: 800;
+}
+.modal-overlay {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 1;
+}
+.uploader-image {
+	display: flex;
+}
+.loginError {
+    width: 20%;
+    height: 200px;
+    background-color: transparent;
+	border-radius: 25px;
+    position: absolute;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loginError.error-state {
+    background-color: white;
+	box-shadow: 0px 0px 127px -68px black;
+}
+.xmark-icon {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	color: black;
+	cursor: pointer;
+}
+.error-message {
+	display: none;
+    font-size: 20px;
+}
+.input-uploader {
+	width: 420px;
+	height: 204px;
+	background-color: #E8F1F6;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 10px;
+}
+.form-icon {
+	width: 175px;
+	height: 128px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.imageformIcon {
+	font-size: 96px;
+	color: #B9C5CC;
+}
+.custom-upload-button {
+	width: 225px;
+    height: 47px;
+    border-radius: 35px;
+    font-size: 19px;
+    font-weight: 600;
+    color: #306685;
+    background-color: #CBD6DC;
+	cursor: pointer;
+}
+.infoaddImage {
+	height: 25px;
+    display: flex;
+    align-items: center;
+}
+.preview-image {
+	width: 100%;
+}
+.preview-container {
+	width: 203px;
+	height: 201px;
+	display: none;
+	position: absolute;
+}
+.delete-icon-preview {
+	position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 22px;
+}
+.closeIconModal {
+	width: 90px;
+    height: 65px;
+    display: flex;
+    position: absolute;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+}
+.closeModaladd {
+	font-size: 30px;
+}
+.cross-icon {
+	cursor: pointer;
+	color: black;
 }
