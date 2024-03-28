@@ -326,13 +326,12 @@ footer nav ul {
 	font-weight: 700;
 }
 .modal {
-    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 630px;
-    height: 680px;
+    width: 700px;
+    height: 725px;
     z-index: 2;
 }
 
@@ -343,12 +342,12 @@ footer nav ul {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	border-radius: 15px;
 }
 
 .closeModal {
-	
 	position: absolute;
-	top: 30px;
+	top: 18px;
 	right: 25px;
 	width: 21px;
 	height: 28px;
@@ -360,8 +359,9 @@ footer nav ul {
 	text-align: center;
 	font-family: "Work Sans";
 	color: black;
+	font-size: 33px;
 	font-weight: 200;
-	height: 90px;
+	height: 125px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -374,12 +374,12 @@ footer nav ul {
 	position: relative;
 }
 .work-imageModal {
-	width: 70px;
+	width: 90px;
 	position: relative;
 }
 .worksContainerModal {
-	width: 70%;
-	height: 400px;
+	width: 76%;
+	height: 446px;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 20px;
@@ -387,24 +387,25 @@ footer nav ul {
 	border-bottom: 2px solid;
 }
 .delete-button {
-	width: 20px;
-	height: 20px;
+	width: 25px;
+	height: 25px;
 	background-color: black;
 	color: white;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	position: absolute;
-	top: 5px;
-	right: 5px;
+	top: 8px;
+	right: 8px;
 	border-radius: 5px;
 	cursor: pointer;
 }
-.iconeTrash {
-	width: 4px;
-	height: 12px;
+.iconTrash {
+	width: 16px;
+	height: 17px;
 	display: flex;
 	justify-content: center;
+	font-size: 17px;
 }
 .addwork-button {
 	width: 230px;
@@ -420,14 +421,8 @@ footer nav ul {
 	cursor: pointer;
 }
 .modaladdWorks {
-	width: 630px;
-    height: 680px;
-	position: fixed;
-	top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-	z-index: 2;
 	background-color: white;
+	border-radius: 15px;
 }
 .modaladd-content {
 	height: 100%;
@@ -463,7 +458,7 @@ footer nav ul {
 	width: 50px;
 }
 .form-content {
-	height: 70%;
+	height: 80%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -613,4 +608,12 @@ footer nav ul {
 .cross-icon {
 	cursor: pointer;
 	color: black;
+}
+.submit-button-container {
+	height: 20%;
+	display: flex;
+	align-items: center;
+}
+.submit-button-active {
+	background-color: #1D6154;
 }

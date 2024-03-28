@@ -2,9 +2,6 @@ const allWorks = new Set(); // set pour stocker les "works"
 const allCats = new Set(); // set pour stocker les "categories"
 const gallery = document.querySelector('.gallery'); // selectionne l'element HTML avec la class ".gallery"
 
-// quand j'appuis sur la croix de fermeture de la modal d'ajout de photo, le fond gris s'enleve et sa retourne a la modal precedente a corriger
-// la suppression du fichier doit se faire s'en rafriachissement et pareil pour l'ajout
-
 async function init() {
     try {
         const works = await fetchData("works"); // récupere les données des "works"
@@ -15,9 +12,9 @@ async function init() {
         console.log("Données de 'Categories'", allCats);
 
         // appel les fonction suivante
-        displayWorks(); 
-        displayFilter(); 
-        handleLoginLogout(); 
+        displayWorks();
+        displayFilter();
+        handleLoginLogout();
         addPhotoFormContent();
     } catch (error) {
         // si ya une erreur un log est laisser
@@ -70,13 +67,14 @@ function displayWorks() {
         const fragment = document.createDocumentFragment(); // crée un fragment de document
         // crée un élément HTML pour chaque work et l'ajoute la galerie
         for (const work of allWorks) {
-            
+
             const figure = document.createElement('div'); // crée une div pour chaque "work"
-            figure.classList.add('figure');
-            
+            figure.classList.add('figure'); // ajoute la class "figure"
+            figure.dataset.workId = work.id; // ajoute l'attribut "data-work-id" correspondant au work
+
             const image = document.createElement('img'); // crée une div img pour chaque "work"
-            image.src = work.imageUrl;
-            image.alt = work.title;
+            image.src = work.imageUrl; // ajoute l'attribut "src"
+            image.alt = work.title; // ajoute l'attribut "alt"
 
             const caption = document.createElement('figcaption');
             caption.textContent = work.title;
@@ -89,7 +87,7 @@ function displayWorks() {
         }
 
         gallery.appendChild(fragment);
-        
+
         console.log("Travaux affichés"); // laisse un log si les works ont été affiché
     } else {
         // si ya une erreur un log est laisser
@@ -237,14 +235,14 @@ async function handleLoginLogout() {
             // l'utilisateur est connecté
             loginBtn.textContent = 'logout';
 
-            // Créer et ajouter un bouton "modifier"
+            // crée et ajoute un bouton "modifier"
             const editButton = document.createElement('button');
             editButton.textContent = 'modifier';
             editButton.innerHTML += '<i class="fa-regular fa-pen-to-square icon-edit"></i>';
             editButton.classList.add('edit-button');
             portfolioSectionTitle.appendChild(editButton);
 
-            // Gestionnaire d'événements pour le bouton "modifier"
+            // gestionnaire d'événements pour le bouton "modifier"
             editButton.addEventListener('click', function () {
                 const contentModal = "Contenu de la modale à afficher";
                 const modalTitle = "Titre de la modale";
@@ -252,31 +250,45 @@ async function handleLoginLogout() {
                 addOverlayDiv();
             });
 
-            // Gestionnaire d'événements pour le bouton "logout"
+            // gestionnaire d'événements pour le bouton "logout"
             loginBtn.addEventListener('click', handleLogout);
         } else {
-            // L'utilisateur n'est pas connecté
+            // l'utilisateur n'est pas connecté
             loginBtn.textContent = 'login';
 
-            // Gestionnaire d'événements pour le bouton "login"
+            // gestionnaire d'événements pour le bouton "login"
             loginBtn.addEventListener('click', function () {
                 window.location.href = 'login.html';
             });
-            
+
         }
     } catch (error) {
         console.error('Une erreur est survenue lors de la vérification du token :', error);
     }
 }
 
-
-
-
 function showModal() {
-    // crée une div pour la modale
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-    modal.style.display = 'block';
+    // vérifie si la modal existe déjà
+    let modal = document.querySelector('.modal');
+
+    // si la modal existe, modifier son affichage
+    if (modal) {
+        modal.style.display = 'block';
+
+        // vérifie si le contenu de la modal existe déjà
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            // si le contenu existe, sortir de la fonction
+            return;
+        }
+    }
+
+    // crée la modal si elle n'existe pas
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.style.display = 'block';
+    }
 
     // crée une div pour le contenu de la modale
     const modalContent = document.createElement('div');
@@ -292,7 +304,7 @@ function showModal() {
     const worksContainerModal = document.createElement('div');
     worksContainerModal.classList.add('worksContainerModal')
 
-    // fonction pour supprimer les travaux de la modal
+    // fonction pour afficher les travaux dans la modal
     allWorks.forEach(work => {
         const workElement = document.createElement('div');
         workElement.classList.add('work-itemModal');
@@ -304,21 +316,25 @@ function showModal() {
         image.alt = work.title;
 
         const deleteButton = document.createElement('button');
-        deleteButton.innerHTML = '<i class="fa-solid fa-trash iconeTrash"></i>';
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash iconTrash"></i>';
         deleteButton.classList.add('delete-button');
+
+        // ajoute un gestionnaire d'événements pour le bouton de suppression
+        deleteButton.addEventListener('click', async () => {
+            try {
+                // envoie une requête DELETE à l'API avec l'ID du travail à supprimer
+                await deleteWork(work.id);
+
+                // si la suppression réussit, supprimez l'élément correspondant du DOM
+                workElement.remove();
+            } catch (error) {
+                console.error('Une erreur est survenue lors de la suppression du travail :', error);
+            }
+        });
 
         workElement.appendChild(image);
         workElement.appendChild(deleteButton);
         worksContainerModal.appendChild(workElement);
-
-        // ajoute un gestionnaire d'événements pour le bouton de suppression
-        deleteButton.addEventListener('click', async () => {
-            // récupere l'ID du work à supprimer
-            const workId = work.id;
-
-            await deleteWork(workId); // appele la fonction pour supprimer le work
-
-        });
     });
 
     // ajoute la div des works au contenu de la modal
@@ -340,7 +356,7 @@ function showModal() {
 
     // crée une icone pour la fermeture
     const closeBtn = document.createElement('i');
-    closeBtn.classList.add('fa', 'fa-solid', 'fa-xmark', 'closeModal','cross-icon');
+    closeBtn.classList.add('fa', 'fa-solid', 'fa-xmark', 'closeModal', 'cross-icon');
 
     // ajoute un gestionnaire d'événements pour fermer la modale lors du clic sur l'icone de fermeture
     closeBtn.addEventListener('click', () => {
@@ -372,10 +388,9 @@ function closeModal(modal) {
         // supprime la div d'ombre de fond du DOM
         overlayDiv.parentNode.removeChild(overlayDiv);
     }
-
-    // supprime la modale du DOM
-    modal.parentNode.removeChild(modal);
+    modal.style.display = 'none';
 }
+
 function closeAllModal() {
     // ferme la modal principale
     const mainModal = document.querySelector('.modal');
@@ -394,6 +409,9 @@ function closeAllModal() {
     if (overlayDiv && overlayDiv.parentNode) {
         overlayDiv.parentNode.removeChild(overlayDiv);
     }
+}
+function closeModalAdd(modal) {
+    modal.remove();
 }
 
 async function deleteWork(workId) {
@@ -415,14 +433,7 @@ async function deleteWork(workId) {
 
         console.log('Travail supprimé avec succès');
 
-        // supprime l'élément correspondant du DOM
-        const deletedWorkElement = document.querySelector(`.work-itemModal[data-work-id="${workId}"]`);
-        if (deletedWorkElement) {
-            deletedWorkElement.remove();
-        } else {
-            console.error('Impossible de trouver l\'élément du travail à supprimer dans le DOM.');
-        }
-
+        removeWorkFromGallery(workId);
     } catch (error) {
         console.error('Erreur lors de la suppression du travail:', error);
     }
@@ -443,16 +454,16 @@ function addPhotoFormContent() {
     // icon edit pour l'uploaderDiv
     const uploaderIcon = document.createElement('div');
     uploaderIcon.innerHTML = '<i class="fa-regular fa-image imageformIcon"></i>'
-    uploaderIcon.classList.add('form-icon'); 
+    uploaderIcon.classList.add('form-icon');
     uploaderDiv.appendChild(uploaderIcon);
-    
+
     // élément pour afficher l'aperçu de l'image
     const previewContainer = document.createElement('div');
     previewContainer.classList.add('preview-container');
     const previewImage = document.createElement('img');
     previewImage.classList.add('preview-image');
     previewContainer.appendChild(previewImage);
-    
+
     // ajoute une croix pour supprimer l'aperçu
     const deleteIcon = document.createElement('i');
     deleteIcon.classList.add('fa-solid', 'fa-xmark', 'delete-icon-preview');
@@ -467,13 +478,13 @@ function addPhotoFormContent() {
     });
     previewContainer.appendChild(deleteIcon);
     uploaderDiv.appendChild(previewContainer);
-    
+
     // bouton personnalisé pour uploader une image
     const customUploadButton = document.createElement('button');
     customUploadButton.textContent = '+ Ajouter photo';
     customUploadButton.classList.add('custom-upload-button');
     uploaderDiv.appendChild(customUploadButton);
-    
+
     // champ pour uploader une image / a enregistrer dans une variable
     imageInput = document.createElement('input');
     imageInput.setAttribute('type', 'file');
@@ -491,15 +502,15 @@ function addPhotoFormContent() {
     console.log("Image input avant d'ajouter l'événement 'change':", imageInput);
     imageInput.addEventListener('change', () => {
         console.log('Changement détecté dans la sélection de fichiers')
-        const file = imageInput.files[0]; 
+        const file = imageInput.files[0];
         // vérifie si un fichier a été sélectionné
         if (file) {
             const reader = new FileReader(); // crée un objet FileReader
 
             // gestionnaire d'événements pour le chargement du fichier
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 previewImage.src = event.target.result;
-                previewImage.style.display = 'block'; 
+                previewImage.style.display = 'block';
                 previewContainer.style.display = 'block';
                 customUploadButton.style.display = 'none';
                 deleteIcon.style.display = 'block';
@@ -516,8 +527,8 @@ function addPhotoFormContent() {
     // ajout de la div imageFileDiv au contenu du formulaire
     formContent.appendChild(uploaderDiv);
 
-    
-    const fieldTitleDiv = document.createElement('div'); // créeation d'une div pour le champs "title"
+
+    const fieldTitleDiv = document.createElement('div'); // création d'une div pour le champs "title"
     fieldTitleDiv.classList.add('input-wrapper');
 
     // titre pour le champ projectNameInput
@@ -550,6 +561,11 @@ function addPhotoFormContent() {
     const categorySelect = document.createElement('select');
     categorySelect.setAttribute('id', 'categoryId');
     categorySelect.setAttribute('name', 'category');
+    
+    // ajout d'une option vide avec une valeur nulle
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    categorySelect.appendChild(emptyOption);
     // ajoute des options pour chaque catégorie disponible
     allCats.forEach(category => {
         const option = document.createElement('option');
@@ -610,6 +626,7 @@ async function addWork(formData) {
         console.log('Travail ajouté avec succès:', data);
 
         updateUIWithNewWork(data);
+
     } catch (error) {
         console.error(error);
         throw error;
@@ -637,11 +654,33 @@ function updateUIWithNewWork(newWork) {
     } else {
         console.error('Élément .gallery non trouvé.');
     }
+
+    const worksContainerModal = document.querySelector('.worksContainerModal'); // sélectionne l'élément contenant les travaux dans la modalité d'ajout de photo
+    if (worksContainerModal) {
+        const workElement = document.createElement('div');
+        workElement.classList.add('work-itemModal');
+        workElement.setAttribute('data-work-id', newWork.id);
+
+        const image = document.createElement('img');
+        image.classList.add('work-imageModal')
+        image.src = newWork.imageUrl;
+        image.alt = newWork.title;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash iconTrash"></i>';
+        deleteButton.classList.add('delete-button');
+
+        workElement.appendChild(image);
+        workElement.appendChild(deleteButton);
+        worksContainerModal.appendChild(workElement);
+    } else {
+        console.error('Élément .worksContainerModal non trouvé.');
+    }
 }
 
 function showModalAdd() {
     const modalAdd = document.createElement('div');
-    modalAdd.classList.add('modaladdWorks');
+    modalAdd.classList.add('modal', 'modaladdWorks');
 
     const modalContent = document.createElement('div');
     modalContent.classList.add('modaladd-content');
@@ -650,7 +689,7 @@ function showModalAdd() {
     const formFooter = document.createElement('div');
     formFooter.classList.add('valid-form');
 
-    let submitButton; 
+    let submitButton;
 
     if (imageInput) {
         console.log('imageInput est défini');
@@ -675,10 +714,10 @@ function showModalAdd() {
                 formData.append('image', imageInput.files[0]);
                 formData.append('title', projectNameInput.value);
                 formData.append('category', categorySelect.value);
-                
+
                 try {
-                    addWork(formData); // appel de la fonction addWork
-                    closeAllModal(); // appel de la fonction closeModal
+                    await addWork(formData); // appel de la fonction addWork
+                    closeModalAdd(modalAdd);
                 } catch (error) {
                     console.error(error);
                 }
@@ -693,7 +732,7 @@ function showModalAdd() {
         submitButton.textContent = 'Valider';
         submitButton.classList.add('submit-button');
     }
-    
+
     // ajoute le titre de la modale
     const titleElement = document.createElement('h2');
     titleElement.textContent = "Ajouter photo";
@@ -714,7 +753,6 @@ function showModalAdd() {
     returnArrow.innerHTML = '<i class="fa-solid fa-arrow-left arrowRetournModal"></i>';
     returnArrow.querySelector('.arrowRetournModal').addEventListener('click', () => {
         modalAdd.parentNode.removeChild(modalAdd); // masque la modale d'ajout de photo
-        modal.style.display = 'block'; // affiche à nouveau la modale principale
     });
 
     // ajoute le contenu du formulaire dans une div parente
@@ -739,6 +777,7 @@ function showModalAdd() {
 
 }
 
+
 // fonction pour ajouter dynamiquement la div d'ombre de fond
 function addOverlayDiv() {
     // crée la div d'ombre de fond
@@ -747,4 +786,13 @@ function addOverlayDiv() {
 
     // ajoute la div juste avant la balise de fermeture body
     document.body.appendChild(overlayDiv);
+}
+
+function removeWorkFromGallery(workId) {
+    const figureToRemove = document.querySelector(`.gallery .figure[data-work-id="${workId}"]`);
+    if (figureToRemove) {
+        figureToRemove.remove(); // supprime l'élément de la galerie
+    } else {
+        console.error('Élément à supprimer non trouvé dans la galerie.');
+    }
 }
