@@ -600,6 +600,7 @@ async function addWork(formData) {
     const projectName = formData.get('title'); // changer les valeur par les bonne
     console.log('Titre du projet:', projectName);
     if (!projectName) {
+        displayError('Le titre est manquant.'); // affiche le message d'erreur
         console.error('Titre de la photo manquant.');
         return;
     }
@@ -607,6 +608,7 @@ async function addWork(formData) {
     const category = formData.get('category'); // changer les valeur par les bonne
     console.log('Catégorie du projet:', category);
     if (!category) {
+        displayError('La catégorie est manquante.'); // affiche le message d'erreur
         console.error('Catégorie de la photo manquante.');
         return;
     }
@@ -700,11 +702,13 @@ function showModalAdd() {
         submitButton.addEventListener('click', async () => {
             // vérifie si le champ du titre de la photo est vide/peutetre en trop
             if (projectNameInput.value.trim() === '') {
+                displayError('Le titre est manquant.'); // affiche le message d'erreur
                 console.error('Le titre de la photo est manquant.');
                 return;
             }
             // vérifie si le champ de la catégorie de la photo est vide/peutetre en trop
             if (categorySelect.value.trim() === '') {
+                displayError('La catégorie est manquante.'); // affiche le message d'erreur
                 console.error('La catégorie de la photo est manquante.');
                 return;
             }
@@ -777,7 +781,6 @@ function showModalAdd() {
 
 }
 
-
 // fonction pour ajouter dynamiquement la div d'ombre de fond
 function addOverlayDiv() {
     // crée la div d'ombre de fond
@@ -795,4 +798,28 @@ function removeWorkFromGallery(workId) {
     } else {
         console.error('Élément à supprimer non trouvé dans la galerie.');
     }
+}
+
+function displayError(message) {
+
+    const errorAdd = document.querySelector('.modaladdWorks');
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.classList.add('error-message');
+    errorDiv.textContent = message;
+
+    const closeIcon = document.createElement('i');
+    closeIcon.classList.add('fa-solid', 'fa-xmark', 'xmark-icon', 'iconCloseError');
+
+    closeIcon.addEventListener('click', function() {
+        errorDiv.remove();
+    });
+
+    errorDiv.appendChild(closeIcon);
+
+    errorDiv.style.display = 'block';
+    
+    errorDiv.classList.add('error-modaladd');
+
+    errorAdd.appendChild(errorDiv);
 }
