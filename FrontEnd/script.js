@@ -16,6 +16,7 @@ async function init() {
         displayFilter();
         handleLoginLogout();
         addPhotoFormContent();
+        displayBannerEdition();
     } catch (error) {
         // si ya une erreur un log est laisser
         console.error('Erreur lors de l\'initialisation:', error);
@@ -561,7 +562,7 @@ function addPhotoFormContent() {
     const categorySelect = document.createElement('select');
     categorySelect.setAttribute('id', 'categoryId');
     categorySelect.setAttribute('name', 'category');
-    
+
     // ajout d'une option vide avec une valeur nulle
     const emptyOption = document.createElement('option');
     emptyOption.value = '';
@@ -803,7 +804,7 @@ function removeWorkFromGallery(workId) {
 function displayError(message) {
 
     const errorAdd = document.querySelector('.modaladdWorks');
-    
+
     const errorDiv = document.createElement('div');
     errorDiv.classList.add('error-message');
     errorDiv.textContent = message;
@@ -811,15 +812,53 @@ function displayError(message) {
     const closeIcon = document.createElement('i');
     closeIcon.classList.add('fa-solid', 'fa-xmark', 'xmark-icon', 'iconCloseError');
 
-    closeIcon.addEventListener('click', function() {
+    closeIcon.addEventListener('click', function () {
         errorDiv.remove();
     });
 
     errorDiv.appendChild(closeIcon);
 
     errorDiv.style.display = 'block';
-    
+
     errorDiv.classList.add('error-modaladd');
 
     errorAdd.appendChild(errorDiv);
 }
+
+function displayBannerEdition() {
+    const token = localStorage.getItem('token');
+
+    const banner = document.querySelector('.EditionBanner');
+
+    const iconElement = document.createElement('i');
+    iconElement.classList.add('far', 'fa-pen-to-square', 'iconEditBanner');
+
+    const editionText = document.createElement('span');
+    editionText.classList.add('textBanner');
+    editionText.textContent = 'mode édition';
+
+    editionText.insertBefore(iconElement, editionText.firstChild);
+
+    if (token) {
+        
+        if (banner) {
+            banner.style.display = 'block';
+
+            banner.appendChild(editionText);
+        }
+    } else {
+        if (banner) {
+
+            banner.style.display = 'none';
+
+            const existingEditionText = banner.querySelector('span');
+
+            if (existingEditionText) {
+
+                banner.removeChild(existingEditionText);
+
+            }
+        }
+    }
+}
+
